@@ -14,27 +14,40 @@ namespace MailAPI.Controllers
     public class EmailController : Controller
     {
 
-        private readonly IMailService mailService;
+        private readonly IMailService _mailService;
         public EmailController(IMailService mailService)
         {
-            this.mailService = mailService;
+            _mailService = mailService;
         }
 
-        [HttpPost("Send")]
+        [HttpPost("send")]
         public async Task<IActionResult> Send([FromForm] MailRequest request)
         {
             try
             {
-                await mailService.SendEmailAsync(request);
+                await _mailService.SendEmailAsync(request);
                 return Ok();
             }
-            catch (Exception )
+            catch (Exception)
             {
+                throw;
+            }
+        }
+
+        [HttpPost("welcome")]
+        public async Task<IActionResult> SendWelcomeMail([FromForm] WelcomeRequest request)
+        {
+            try
+            {
+                await _mailService.SendWelcomeEmailAsync(request);
+                return Ok();
+            }
+            catch (Exception)
+            {
+
                 throw;
             }
 
         }
-
-
     }
 }
